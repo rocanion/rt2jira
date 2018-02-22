@@ -64,7 +64,9 @@ The following are comments on some of the INI settings.
 
 * `project`: When a new JIRA ticket is created by the script, it will be added to the specified project.
 
-* `component`: When a new JIRA ticket is created by the script, it will be added with the specified component.
+* `component`: When a new JIRA ticket is created by the script, it will be added with the specified component. Note that to do this you may need to edit the JIRA project's Screens to add the Component/s field to the create and edit screens.
+
+*  `resolve_transition_name`: This is the name of the transition in the JIRA project's workflow that will be invoked to transition a JIRA issue from initial state to the resolved or done state. This transition name must exist in the project. It is highly recommended that the transition have no conditions or post-actions because these may cause processing to fail.
 
 ### [sanity] ###
 
