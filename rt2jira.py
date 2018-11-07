@@ -1,7 +1,12 @@
 #!/usr/bin/env python
 
 from __future__ import print_function
-from itertools import izip
+try:
+    # Python 2
+    from itertools import izip
+except ImportError:
+    # Python 3
+    izip = zip
 from rtkit.resource import RTResource
 from rtkit.authenticators import CookieAuthenticator
 from rtkit.errors import RTResourceError
@@ -141,18 +146,20 @@ def resolve(jira_issue, resolution_name, resolve_comment):
     resolution_id = None
 
     for transition in jira.transitions(jira_issue):
+        #pprint.pprint(transition)
         if state_name in transition['name']:
             state_id = transition['id']
             break
 
     for resolution in jira.resolutions():
+        #pprint.pprint(resolution)
         if resolution_name in resolution.name:
             resolution_id = resolution.id
             break
 
     if state_id and resolution_id:
-        fields_dict = config_get_dict(config, 'jira', 'resolve_fields')
-        fields_dict['resolution'] = { 'id': resolution_id }
+        #fields_dict = config_get_dict(config, 'jira', 'resolve_fields')
+        #fields_dict['resolution'] = { 'id': resolution_id }
         logger.info('Resolving ticket (' + jira_issue.key + ')')
         syslog.syslog(syslog.LOG_INFO, 'Resolving ticket (' + jira_issue.key + ')')
         jira.transition_issue(jira_issue, state_id, fields=fields_dict, comment=resolve_comment)
